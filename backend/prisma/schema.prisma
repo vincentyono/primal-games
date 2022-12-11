@@ -28,6 +28,7 @@ model game {
   bundle_item  bundle_item[]
   transactions transactions[]
   on_sale      on_sale[]
+  cart         cart[]
 }
 
 model genre {
@@ -61,10 +62,28 @@ model user {
   password         String           @db.VarChar(120)
   ratings          ratings[]
   cart             game[]
-  friends          user[]           @relation("UserFriends")
-  symmetricfriends user[]           @relation("UserFriends") // This exists to satisfy prisma (FriendList)
   transactions     transactions[]
   payment_method   payment_method[]
+  carts            cart[]
+  friends          friend_list[]    @relation("friend")
+  symmetricfriends friend_list[]    @relation("symmetricfriend")
+}
+
+model friend_list {
+  id       String  @id @default(uuid())
+  a        user    @relation("friend", fields: [a_id], references: [id])
+  a_id     String
+  b        user    @relation("symmetricfriend", fields: [b_id], references: [id])
+  b_id     String
+  accepted Boolean
+}
+
+model cart {
+  id      String @id @default(uuid())
+  user    user   @relation(fields: [user_id], references: [id])
+  user_id String
+  game    game   @relation(fields: [game_id], references: [id])
+  game_id String
 }
 
 model bundles {
