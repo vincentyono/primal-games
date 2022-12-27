@@ -11,17 +11,15 @@ datasource db {
 }
 
 model game {
-  id             String      @id @default(uuid())
-  title          String      @db.VarChar(100)
-  description    String      @db.Text
-  developer      String      @db.VarChar(40)
-  publisher      String      @db.VarChar(40)
+  id             String    @id @default(uuid())
+  title          String    @db.VarChar(100)
+  description    String    @db.Text
+  developer      String    @db.VarChar(40)
   images         Json
   price          Decimal
-  average_rating Float       @default(0)
+  average_rating Float     @default(0)
   genres         genre[]
   ratings        ratings[]
-  platforms      platforms[]
 
   // this is to satisfy prisma
   user         user[]
@@ -48,19 +46,13 @@ model ratings {
   comment String?  @db.Text
 }
 
-model platforms {
-  id       String @id @default(uuid())
-  platform String @db.VarChar(30)
-
-  game game[]
-}
-
 model user {
   id               String           @id @default(uuid())
   username         String           @unique @db.VarChar(24)
   email            String           @unique @db.VarChar(50)
-  password         String           @db.VarChar(120)
-  refresh_token    String?          @db.VarChar(512)
+  password         String           @db.VarChar(212)
+  refresh_token    String?          @db.VarChar(212)
+  profile_picture  String?          @db.Text
   ratings          ratings[]
   library          game[]
   transactions     transactions[]

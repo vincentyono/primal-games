@@ -43,7 +43,7 @@ export class AuthService {
 
       return tokens;
     } catch (error) {
-      throw new Error("Something went wrong");
+      throw new Error(error);
     }
   }
 
@@ -117,7 +117,8 @@ export class AuthService {
       },
     });
 
-    if (!user) throw new ForbiddenException("Access Denied");
+    if (!user || !user.refresh_token)
+      throw new ForbiddenException("Access Denied");
 
     const isRefreshTokenMatches = await bcrypt.compare(
       refreshToken,

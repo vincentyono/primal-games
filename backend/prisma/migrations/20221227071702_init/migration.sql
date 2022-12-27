@@ -4,7 +4,6 @@ CREATE TABLE `game` (
     `title` VARCHAR(100) NOT NULL,
     `description` TEXT NOT NULL,
     `developer` VARCHAR(40) NOT NULL,
-    `publisher` VARCHAR(40) NOT NULL,
     `images` JSON NOT NULL,
     `price` DECIMAL(65, 30) NOT NULL,
     `average_rating` DOUBLE NOT NULL DEFAULT 0,
@@ -33,20 +32,13 @@ CREATE TABLE `ratings` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `platforms` (
-    `id` VARCHAR(191) NOT NULL,
-    `platform` VARCHAR(30) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `user` (
     `id` VARCHAR(191) NOT NULL,
     `username` VARCHAR(24) NOT NULL,
     `email` VARCHAR(50) NOT NULL,
-    `password` VARCHAR(120) NOT NULL,
-    `refresh_token` VARCHAR(512) NULL,
+    `password` VARCHAR(212) NOT NULL,
+    `refresh_token` VARCHAR(212) NULL,
+    `profile_picture` TEXT NULL,
 
     UNIQUE INDEX `user_username_key`(`username`),
     UNIQUE INDEX `user_email_key`(`email`),
@@ -131,15 +123,6 @@ CREATE TABLE `_gameTogenre` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_gameToplatforms` (
-    `A` VARCHAR(191) NOT NULL,
-    `B` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `_gameToplatforms_AB_unique`(`A`, `B`),
-    INDEX `_gameToplatforms_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `_gameTouser` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
@@ -192,12 +175,6 @@ ALTER TABLE `_gameTogenre` ADD CONSTRAINT `_gameTogenre_A_fkey` FOREIGN KEY (`A`
 
 -- AddForeignKey
 ALTER TABLE `_gameTogenre` ADD CONSTRAINT `_gameTogenre_B_fkey` FOREIGN KEY (`B`) REFERENCES `genre`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_gameToplatforms` ADD CONSTRAINT `_gameToplatforms_A_fkey` FOREIGN KEY (`A`) REFERENCES `game`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_gameToplatforms` ADD CONSTRAINT `_gameToplatforms_B_fkey` FOREIGN KEY (`B`) REFERENCES `platforms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_gameTouser` ADD CONSTRAINT `_gameTouser_A_fkey` FOREIGN KEY (`A`) REFERENCES `game`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

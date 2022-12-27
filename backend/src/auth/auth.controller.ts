@@ -11,8 +11,8 @@ import { AuthService } from "./auth.service";
 import { SigninDto } from "./dto/signin.dto";
 import { SignupDto } from "./dto/signup.dto";
 import { Request } from "express";
-import { AuthGuard } from "@nestjs/passport";
 import { JwtPayload } from "./types/jwt-payload";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("auth")
 export class AuthController {

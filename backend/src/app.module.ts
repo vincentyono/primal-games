@@ -3,6 +3,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { ConfigModule } from "@nestjs/config";
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ConfigModule } from "@nestjs/config";
       envFilePath: [".env"],
     }),
     UserModule,
+    GameModule,
   ],
   controllers: [],
   providers: [PrismaService],
