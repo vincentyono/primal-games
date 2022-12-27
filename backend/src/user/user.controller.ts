@@ -8,6 +8,8 @@ import {
   HttpCode,
   HttpStatus,
   Body,
+  Patch,
+  Put,
 } from "@nestjs/common";
 import { Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
@@ -50,8 +52,8 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard("jwt"))
-  @Post("accept")
-  @HttpCode(HttpStatus.OK)
+  @Put("accept")
+  @HttpCode(HttpStatus.NO_CONTENT)
   acceptFriendRequest(@Body() dto: FriendRequestDto) {
     return this.userService.acceptFriendRequest(dto.id);
   }

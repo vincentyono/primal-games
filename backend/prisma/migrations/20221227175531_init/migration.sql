@@ -1,12 +1,13 @@
 -- CreateTable
 CREATE TABLE `game` (
     `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(100) NOT NULL,
+    `title` VARCHAR(50) NOT NULL,
     `description` TEXT NOT NULL,
     `developer` VARCHAR(40) NOT NULL,
     `images` JSON NOT NULL,
     `price` DECIMAL(65, 30) NOT NULL,
-    `average_rating` DOUBLE NOT NULL DEFAULT 0,
+    `rating_sum` INTEGER NOT NULL DEFAULT 0,
+    `number_of_rater` INTEGER NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -14,7 +15,7 @@ CREATE TABLE `game` (
 -- CreateTable
 CREATE TABLE `genre` (
     `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(20) NOT NULL,
+    `name` VARCHAR(30) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

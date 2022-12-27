@@ -11,9 +11,12 @@ export class UserService {
         where: {
           id,
         },
+        select: {
+          username: true,
+          email: true,
+          profile_picture: true,
+        },
       });
-      delete user.password;
-      delete user.refresh_token;
       return user;
     } catch (error) {
       throw new Error("Something went wrong");
@@ -28,12 +31,11 @@ export class UserService {
             contains: username,
           },
         },
+        select: {
+          id: true,
+          username: true,
+        },
       });
-
-      for (const user of users) {
-        delete user.password;
-        delete user.refresh_token;
-      }
 
       return users;
     } catch (error) {
@@ -42,15 +44,6 @@ export class UserService {
   }
 
   async getUserFriends(id: string, type: string) {
-    const deleteSensitiveInfo = (friends) => {
-      delete friends.id;
-      delete friends.username;
-      delete friends.email;
-      delete friends.password;
-      delete friends.refresh_token;
-      return friends;
-    };
-
     try {
       if (type === "accepted") {
         const friends = await this.prismaService.friend_list.findMany({
@@ -65,7 +58,6 @@ export class UserService {
             },
           },
         });
-        deleteSensitiveInfo(friends);
         return friends;
       }
 
