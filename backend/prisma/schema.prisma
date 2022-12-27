@@ -11,15 +11,16 @@ datasource db {
 }
 
 model game {
-  id             String    @id @default(uuid())
-  title          String    @db.VarChar(100)
-  description    String    @db.Text
-  developer      String    @db.VarChar(40)
-  images         Json
-  price          Decimal
-  average_rating Float     @default(0)
-  genres         genre[]
-  ratings        ratings[]
+  id              String    @id @default(uuid())
+  title           String    @db.VarChar(50)
+  description     String    @db.Text
+  developer       String    @db.VarChar(40)
+  images          Json
+  price           Decimal
+  rating_sum      Int       @default(0)
+  number_of_rater Int       @default(0)
+  genres          genre[]
+  ratings         ratings[]
 
   // this is to satisfy prisma
   user         user[]
@@ -31,7 +32,7 @@ model game {
 
 model genre {
   id    String @id @default(uuid())
-  name  String @db.VarChar(20)
+  name  String @db.VarChar(30)
   games game[]
 }
 
