@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { prisma } from "@prisma/client";
 import { equal } from "assert";
 import { PrismaService } from "prisma/prisma.service";
 
@@ -10,7 +11,11 @@ export class GameService {
     try {
       const game = await this.prismaService.game.findUnique({
         where: { id },
+        include: { genres: true, ratings: true },
       });
+
+      if (!game) throw new BadRequestException("Not found!");
+
       return game;
     } catch (error) {
       throw new Error(error);
@@ -28,6 +33,9 @@ export class GameService {
               },
             },
           },
+          include: {
+            genres: true,
+          },
         });
         return games;
       }
@@ -43,6 +51,9 @@ export class GameService {
             };
           }),
         },
+        include: {
+          genres: true,
+        },
       });
       return games;
     } catch (error) {
@@ -57,28 +68,29 @@ export class GameService {
     rating: number,
   ) {
     try {
-      await this.prismaService.ratings.create({
-        data: {
-          user_id: userId,
-          game_id: gameId,
-          comment,
-          rating,
-        },
-      });
-
-      await this.prismaService.game.update({
-        where: {
-          id: gameId,
-        },
-        data: {
-          rating_sum: {
-            increment: rating,
+      await this.prismaService.$transaction([
+        this.prismaService.ratings.create({
+          data: {
+            user_id: userId,
+            game_id: gameId,
+            comment,
+            rating,
           },
-          number_of_rater: {
-            increment: 1,
+        }),
+        this.prismaService.game.update({
+          where: {
+            id: gameId,
           },
-        },
-      });
+          data: {
+            rating_sum: {
+              increment: rating,
+            },
+            number_of_rater: {
+              increment: 1,
+            },
+          },
+        }),
+      ]);
     } catch (error) {
       throw new Error(error);
     }

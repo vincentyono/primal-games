@@ -19,7 +19,7 @@ export class GameController {
   constructor(private gameService: GameService) {}
 
   @Get("detail/:id")
-  getGameDetail(@Param() id: string) {
+  getGameDetail(@Param("id") id: string) {
     return this.gameService.getGameDetail(id);
   }
 
